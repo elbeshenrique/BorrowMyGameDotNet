@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+    borrowmygamedotnet:
+        build:
+            context: ./Dockerfiles
+            dockerfile: ../Dockerfiles/BorrowMyGameDotNet.dockerfile
+        ports:
+            - 5000
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+        volumes:
+            - ~/.vsdbg:/remote_debugger:rw
