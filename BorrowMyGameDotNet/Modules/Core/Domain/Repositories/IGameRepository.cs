@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Repositories
 {
-    public interface IGamesRepository
+    public interface IGameRepository
     {
-        Task<ICollection<Game>> GetAll();
+        IEnumerable<Game> GetAll();
+        void Create(Game game);
     }
 }

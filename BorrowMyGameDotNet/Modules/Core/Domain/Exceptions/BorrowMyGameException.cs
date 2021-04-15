@@ -6,5 +6,8 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Exceptions
     {
         protected BorrowMyGameException(string message) : base(message) {
         }
+
+        protected BorrowMyGameException(string message, Exception innerException) : base(message, innerException) {
+        }
     }
 }

@@ -6,6 +6,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases
 {
     public interface IGetAllGamesUsecase
     {
-        Task<ICollection<Game>> Execute();
+        IEnumerable<GameOutput> Execute();
     }
 }

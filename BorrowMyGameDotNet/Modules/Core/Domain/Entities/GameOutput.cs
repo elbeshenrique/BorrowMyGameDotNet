@@ -1,10 +1,14 @@
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Entities
 {
-    public struct GameOutput
+    public class GameOutput
     {
-        public readonly int Id;
-        public readonly string Title;
-        public readonly bool IsBorrowed;
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public bool IsBorrowed { get; set; }
+
+        public GameOutput()
+        {
+        }
 
         public GameOutput(int id, string title, bool isBorrowed)
         {

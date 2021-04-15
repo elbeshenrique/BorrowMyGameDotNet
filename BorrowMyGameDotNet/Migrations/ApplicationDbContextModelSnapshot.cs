@@ -16,7 +16,7 @@ namespace BorrowMyGameDotNet.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("BorrowMyGameDotNet.Data.Models.GameModel", b =>
+            modelBuilder.Entity("BorrowMyGameDotNet.Modules.Core.Domain.Entities.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,7 +30,7 @@ namespace BorrowMyGameDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 #pragma warning restore 612, 618
         }

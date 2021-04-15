@@ -1,17 +1,32 @@
-using BorrowMyGameDotNet.Core.Domain.Adapters.Presenters;
+using System.Collections.Generic;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
+using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 
 namespace BorrowMyGameDotNet.Modules.Core.Application.Presenters
 {
     public class GamePresenter : IGamePresenter
     {
+
         public GameOutput ToOutput(Game game)
         {
-            return new GameOutput(
-                game.Id.AsInt(),
-                game.Title.AsString(),
-                game.IsBorrowed.AsBool()
-            );
+            return new GameOutput {
+                Id = game.Id,
+                Title = game.Title,
+                IsBorrowed = game.IsBorrowed
+            };
+        }
+
+        public IEnumerable<GameOutput> ToOutputs(IEnumerable<Game> games)
+        {
+            var gameOutputs = new List<GameOutput>();
+
+            foreach (var game in games)
+            {
+                var gameOutput = ToOutput(game);
+                gameOutputs.Add(gameOutput);
+            }
+
+            return gameOutputs;
         }
     }
 }

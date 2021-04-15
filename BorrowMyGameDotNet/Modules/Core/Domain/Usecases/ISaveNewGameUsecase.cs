@@ -4,6 +4,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases
 {
     public interface ISaveNewGameUsecase
     {
-        Game Execute(GameInput gameInput);
+        GameOutput Execute(GameInput gameInput);
     }
 }

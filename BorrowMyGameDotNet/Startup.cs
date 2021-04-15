@@ -1,8 +1,10 @@
-using BorrowMyGameDotNet.Core.Domain.Adapters.Presenters;
 using BorrowMyGameDotNet.Data;
 using BorrowMyGameDotNet.Modules.Core.Application.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Application.Usecases;
+using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
+using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
+using BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +38,9 @@ namespace BorrowMyGameDotNet
             );
 
             services.AddTransient<IGamePresenter, GamePresenter>();
+            services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<ISaveNewGameUsecase, SaveNewGameUsecase>();
+            services.AddTransient<IGetAllGamesUsecase, GetAllGamesUsecase>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

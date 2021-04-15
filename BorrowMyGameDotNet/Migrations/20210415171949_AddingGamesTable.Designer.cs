@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BorrowMyGameDotNet.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210415005442_AddingGameTable")]
-    partial class AddingGameTable
+    [Migration("20210415171949_AddingGamesTable")]
+    partial class AddingGamesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,7 +18,7 @@ namespace BorrowMyGameDotNet.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
-            modelBuilder.Entity("BorrowMyGameDotNet.Data.Models.GameModel", b =>
+            modelBuilder.Entity("BorrowMyGameDotNet.Modules.Core.Domain.Entities.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,7 +32,7 @@ namespace BorrowMyGameDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game");
+                    b.ToTable("Games");
                 });
 #pragma warning restore 612, 618
         }

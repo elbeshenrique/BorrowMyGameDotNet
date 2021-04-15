@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
+using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
 
@@ -10,27 +11,26 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
     public class GetAllGamesUsecase : IGetAllGamesUsecase
     {
 
-        private readonly IGamesRepository _repository;
+        private readonly IGameRepository _repository;
+        private readonly IGamePresenter _gamePresenter;
 
-        public GetAllGamesUsecase(IGamesRepository repository)
+        public GetAllGamesUsecase(IGameRepository repository, IGamePresenter gamePresenter)
         {
             _repository = repository;
+            _gamePresenter = gamePresenter;
         }
 
-        public async Task<ICollection<Game>> Execute()
+        public IEnumerable<GameOutput> Execute()
         {
             try
             {
-                var games = await _repository.GetAll();
-                return games;
+                var games = _repository.GetAll();
+                var gameOutputs = _gamePresenter.ToOutputs(games);
+                return gameOutputs;
             }
-            catch (GameRepositoryException)
+            catch (Exception exception)
             {
-                throw new GetAllGamesException();
-            }
-            catch
-            {
-                throw new GetAllGamesException();
+                throw new GetAllGamesException(exception);
             }
         }
     }

@@ -1,14 +1,8 @@
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Entities
 {
-    public struct GameInput
+    public class GameInput
     {
-        public readonly string Title;
-        public readonly bool IsBorrowed;
-
-        public GameInput(string title, bool isBorrowed)
-        {
-            Title = title;
-            IsBorrowed = isBorrowed;
-        }
+        public string Title { get; set; }
+        public bool IsBorrowed { get; set; }
     }
 }

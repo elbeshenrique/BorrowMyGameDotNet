@@ -1,18 +1,24 @@
-using BorrowMyGameDotNet.Modules.Core.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Entities
 {
+    [Table("Games")]
     public class Game
     {
-        public readonly Identifier Id;
-        public readonly Title Title;
-        public readonly IsBorrowed IsBorrowed;
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public bool IsBorrowed { get; set; }
 
-        public Game(Identifier id, Title title, IsBorrowed isBorrowed)
+        public Game()
+        {
+        }
+
+        public Game(int id, string title, bool isBorrowed)
         {
             Id = id;
             Title = title;
             IsBorrowed = isBorrowed;
         }
+
     }
 }
