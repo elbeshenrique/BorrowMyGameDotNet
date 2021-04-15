@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
+using System;
 
 namespace BorrowMyGameDotNet.Controllers
 {
@@ -40,6 +41,10 @@ namespace BorrowMyGameDotNet.Controllers
                 return Ok(gameOutput);
             }
             catch (SaveNewGameException exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+            catch (Exception exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }

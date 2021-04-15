@@ -1,4 +1,5 @@
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
+using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
 
 namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
@@ -7,7 +8,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
     {
         public Game Execute(GameInput gameInput)
         {
-            throw new System.NotImplementedException();
+            throw new SaveNewGameException();
         }
     }
 }

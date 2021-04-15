@@ -2,6 +2,46 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/BorrowMyGameDotNet/BorrowMyGameDotNet.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/BorrowMyGameDotNet/BorrowMyGameDotNet.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/BorrowMyGameDotNet/BorrowMyGameDotNet.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceFolder}/BorrowMyGameDotNet/"
+            }
+        },
+        {
             "type": "docker-build",
             "label": "docker-build: debug",
             "dependsOn": [
@@ -10,7 +50,7 @@
             "dockerBuild": {
                 "tag": "borrowmygamedotnet:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Dockerfiles/BorrowMyGameDotNet.dockerfile",
+                "dockerfile": "${workspaceFolder}/BorrowMyGameDotNet/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
@@ -26,7 +66,7 @@
             ],
             "dockerBuild": {
                 "tag": "borrowmygamedotnet:latest",
-                "dockerfile": "${workspaceFolder}/Dockerfiles/BorrowMyGameDotNet.dockerfile",
+                "dockerfile": "${workspaceFolder}/BorrowMyGameDotNet/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
