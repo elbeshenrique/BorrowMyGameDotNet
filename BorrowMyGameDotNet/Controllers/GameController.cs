@@ -7,17 +7,18 @@ using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BorrowMyGameDotNet.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class GameController : ControllerBase
     {
-
-        private ApplicationDbContext _dbContext;
-        private IGameUsecase _gameUsecase;
-        private IGamePresenter _gamePresenter;
+        private ApplicationDbContext dbContext;
+        private IGameUsecase gameUsecase;
+        private IGamePresenter gamePresenter;
 
         public GameController(
             ApplicationDbContext dbContext,
@@ -25,9 +26,9 @@ namespace BorrowMyGameDotNet.Controllers
             IGamePresenter gamePresenter
         )
         {
-            _dbContext = dbContext;
-            _gameUsecase = gameUsecase;
-            _gamePresenter = gamePresenter;
+            this.dbContext = dbContext;
+            this.gameUsecase = gameUsecase;
+            this.gamePresenter = gamePresenter;
         }
 
         [HttpGet]
@@ -35,7 +36,7 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                var gameOutputs = await _gameUsecase.GetAll();
+                var gameOutputs = await gameUsecase.GetAll();
                 return Ok(gameOutputs);
             }
             catch (GameUsecaseException exception)
@@ -49,7 +50,7 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                var gameOutput = await _gameUsecase.Find(id);
+                var gameOutput = await gameUsecase.Find(id);
                 return Ok(gameOutput);
             }
             catch (NotFoundException exception)
@@ -67,7 +68,7 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                var gameOutput = await _gameUsecase.Create(gameInput);
+                var gameOutput = await gameUsecase.Create(gameInput);
                 return StatusCode(StatusCodes.Status201Created, gameOutput);
             }
             catch (GameUsecaseException exception)
@@ -81,7 +82,7 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                await _gameUsecase.Update(id, gameInput);
+                await gameUsecase.Update(id, gameInput);
                 return NoContent();
             }
             catch (NotFoundException exception)
@@ -99,7 +100,7 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                await _gameUsecase.UpdateIsBorrowed(id, isBorrowed);
+                await gameUsecase.UpdateIsBorrowed(id, isBorrowed);
                 return NoContent();
             }
             catch (NotFoundException exception)
