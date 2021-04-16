@@ -2,7 +2,7 @@ using System;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Exceptions
 {
-    public class GameRepositoryException : BorrowMyGameDotNetException
+    public class GameRepositoryException : CoreException
     {
 
         private const string GameRepositoryFailureMessage = "Game repository failure.";

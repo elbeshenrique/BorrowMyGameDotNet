@@ -11,7 +11,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
 {
     public class GameUsecase : IGameUsecase
     {
-
         private const string FailureGettingGameData = "Failure on getting games data.";
         private const string FailureCreatingGameData = "Failure on creating game data.";
         private const string FailureUpdatingGameData = "Failure on updating game data.";
@@ -19,22 +18,21 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         private const string InvalidGameInput = "Invalid game input.";
         private const string EmptyGameTitle = "Game title cannot be empty.";
 
-
-        private readonly IGameRepository _repository;
-        private readonly IGamePresenter _presenter;
+        private readonly IGameRepository repository;
+        private readonly IGamePresenter presenter;
 
         public GameUsecase(IGameRepository repository, IGamePresenter presenter)
         {
-            _repository = repository;
-            _presenter = presenter;
+            this.repository = repository;
+            this.presenter = presenter;
         }
 
         public async Task<IEnumerable<GameOutput>> GetAll()
         {
             try
             {
-                var games = await _repository.GetAll();
-                var gameOutputs = _presenter.ToOutputs(games);
+                var games = await repository.GetAll();
+                var gameOutputs = presenter.ToOutputs(games);
                 return gameOutputs;
             }
             catch (Exception exception)
@@ -47,13 +45,13 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         {
             try
             {
-                var game = await _repository.Find(id);
+                var game = await repository.Find(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFound, id));
                 }
 
-                var gameOutput = _presenter.ToOutput(game);
+                var gameOutput = presenter.ToOutput(game);
                 return gameOutput;
             }
             catch (NotFoundException)
@@ -78,8 +76,8 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
                     IsBorrowed = gameInput.IsBorrowed
                 };
 
-                await _repository.Create(game);
-                var gameOutput = _presenter.ToOutput(game);
+                await repository.Create(game);
+                var gameOutput = presenter.ToOutput(game);
                 return gameOutput;
             }
             catch (Exception exception)
@@ -94,7 +92,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             {
                 ValidateGameInput(gameInput);
 
-                var game = await _repository.Find(id);
+                var game = await repository.Find(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFound, id));
@@ -102,7 +100,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
 
                 game.Title = gameInput.Title;
                 game.IsBorrowed = gameInput.IsBorrowed;
-                await _repository.Update(id, game);
+                await repository.Update(id, game);
             }
             catch (Exception exception)
             {
@@ -114,14 +112,14 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         {
             try
             {
-                var game = await _repository.Find(id);
+                var game = await repository.Find(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFound, id));
                 }
 
                 game.IsBorrowed = isBorrowed;
-                await _repository.UpdateIsBorrowed(game, isBorrowed);
+                await repository.UpdateIsBorrowed(game, isBorrowed);
             }
             catch (Exception exception)
             {

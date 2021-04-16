@@ -10,22 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
 {
-    public class GameRepository : IGameRepository
+    public class GameEFRepository : IGameRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly IGamePresenter _gamePresenter;
+        private readonly ApplicationDbContext dbContext;
+        private readonly IGamePresenter presenter;
 
-        public GameRepository(ApplicationDbContext dbContext, IGamePresenter gamePresenter)
+        public GameEFRepository(ApplicationDbContext dbContext, IGamePresenter presenter)
         {
-            _dbContext = dbContext;
-            _gamePresenter = gamePresenter;
+            this.dbContext = dbContext;
+            this.presenter = presenter;
         }
 
         public async Task<IEnumerable<Game>> GetAll()
         {
             try
             {
-                var games = await _dbContext.Games.ToListAsync();
+                var games = await dbContext.Games.ToListAsync();
                 return games;
             }
             catch (Exception exception)
@@ -38,8 +38,8 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
         {
             try
             {
-                _dbContext.Games.Add(game);
-                await _dbContext.SaveChangesAsync();
+                dbContext.Games.Add(game);
+                await dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -51,7 +51,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
         {
             try
             {
-                var game = await _dbContext.Games.FindAsync(id);
+                var game = await dbContext.Games.FindAsync(id);
                 return game;
             }
             catch (Exception exception)
@@ -64,8 +64,8 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
         {
             try
             {
-                _dbContext.Games.Update(game);
-                await _dbContext.SaveChangesAsync();
+                dbContext.Games.Update(game);
+                await dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -77,10 +77,10 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
         {
             try
             {
-                var isBorrowedProperty = _dbContext.Entry(game).Property(g => g.IsBorrowed);
+                var isBorrowedProperty = dbContext.Entry(game).Property(g => g.IsBorrowed);
                 isBorrowedProperty.IsModified = true;
                 
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
             {

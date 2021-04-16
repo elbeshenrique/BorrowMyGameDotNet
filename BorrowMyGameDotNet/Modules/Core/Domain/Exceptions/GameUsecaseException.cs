@@ -2,7 +2,7 @@ using System;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Exceptions
 {
-    public class GameUsecaseException : BorrowMyGameDotNetException
+    public class GameUsecaseException : CoreException
     {
 
         public GameUsecaseException(string message)
