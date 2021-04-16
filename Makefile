@@ -10,6 +10,12 @@ down:
 logs:
 	docker-compose logs -f
 
+backend-up:
+	docker-compose up -d borrowmygamedotnet
+
+backend-down:
+	docker-compose stop borrowmygamedotnet
+
 db-up:
 	docker-compose up -d mysql
 

@@ -1,9 +1,11 @@
 version: "3.3"
 services:
+
     borrowmygamedotnet:
+        image: borrowmygamedotnet
         build:
-            context: ./BorrowMyGameDotNet
-            dockerfile: ../Dockerfiles/BorrowMyGameDotNet.dockerfile
+            context: .
+            dockerfile: ./Dockerfiles/BorrowMyGameDotNet.dockerfile
         ports:
             - 5000:5000
             - 5001:5001

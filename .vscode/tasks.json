@@ -36,10 +36,7 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile",
-            "options": {
-                "cwd": "${workspaceFolder}/BorrowMyGameDotNet/"
-            }
+            "problemMatcher": "$msCompile"
         },
         {
             "type": "docker-build",
@@ -50,7 +47,7 @@
             "dockerBuild": {
                 "tag": "borrowmygamedotnet:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/BorrowMyGameDotNet/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Dockerfiles/BorrowMyGameDotNet.dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
@@ -66,7 +63,7 @@
             ],
             "dockerBuild": {
                 "tag": "borrowmygamedotnet:latest",
-                "dockerfile": "${workspaceFolder}/BorrowMyGameDotNet/Dockerfile",
+                "dockerfile": "${workspaceFolder}/Dockerfiles/BorrowMyGameDotNet.dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
