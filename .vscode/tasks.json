@@ -47,7 +47,7 @@
             "dockerBuild": {
                 "tag": "borrowmygamedotnet:dev",
                 "target": "base",
-                "dockerfile": "${workspaceFolder}/Dockerfiles/BorrowMyGameDotNet.dockerfile",
+                "dockerfile": "${workspaceFolder}/BorrowMyGameDotNet/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },

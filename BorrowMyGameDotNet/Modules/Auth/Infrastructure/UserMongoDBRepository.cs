@@ -23,7 +23,8 @@ namespace BorrowMyGameDotNet.Modules.Auth.Infrastructure
         {
             try
             {
-                var user = (await users.FindAsync<User>(u => u.Email == email)).FirstOrDefault();
+                var asyncQuery = await users.FindAsync<User>(u => u.Email == email);
+                var user = asyncQuery.FirstOrDefault();
                 return user;
             }
             catch (Exception exception)
