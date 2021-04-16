@@ -16,3 +16,14 @@ db-up:
 db-down:
 	docker-compose stop mysql
 
+mongo-up:
+	docker-compose up -d mongo
+
+mongo-down:
+	docker-compose stop mongo
+
+me-up:
+	docker-compose up -d mongo-express
+
+me-down:
+	docker-compose stop mongo-express

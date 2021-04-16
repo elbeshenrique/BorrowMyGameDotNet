@@ -7,6 +7,9 @@ services:
         ports:
             - 5000:5000
             - 5001:5001
+        depends_on: 
+            - mysql
+            - mongo
 
     nginx:
         build:
@@ -42,8 +45,26 @@ services:
             - 3306:3306
         env_file:
             - .env
-    
-    # mongodb:
+
+    mongo:
+        build:
+            context: .
+            dockerfile: Dockerfiles/Mongo.dockerfile
+        volumes:
+            - mongo:/data/db
+        env_file:
+            - .env
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            - .env
+        depends_on: 
+            - mongo
 
 volumes:
     mysql:
+    mongo:
