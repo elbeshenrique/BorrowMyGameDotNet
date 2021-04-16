@@ -3,7 +3,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace BorrowMyGameDotNet.Migrations
 {
-    public partial class AddingGamesTable : Migration
+    public partial class GamesTableAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

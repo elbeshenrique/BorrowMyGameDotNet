@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BorrowMyGameDotNet.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210415171949_AddingGamesTable")]
-    partial class AddingGamesTable
+    [Migration("20210416155019_GamesTableAdded")]
+    partial class GamesTableAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
