@@ -1,7 +1,7 @@
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BorrowMyGameDotNet.Data
+namespace BorrowMyGameDotNet.Data.Contexts
 {
     public class ApplicationDbContext : DbContext
     {

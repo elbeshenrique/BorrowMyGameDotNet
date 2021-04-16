@@ -1,4 +1,3 @@
-using BorrowMyGameDotNet.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
@@ -8,6 +7,7 @@ using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using BorrowMyGameDotNet.Data.Contexts;
 
 namespace BorrowMyGameDotNet.Controllers
 {

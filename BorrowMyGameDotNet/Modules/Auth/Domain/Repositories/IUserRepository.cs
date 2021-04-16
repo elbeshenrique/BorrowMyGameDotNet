@@ -5,6 +5,6 @@ namespace BorrowMyGameDotNet.Modules.Auth.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetAuthenticated(LoginInput loginInput);
+        Task<User> Get(string email);
     }
 }

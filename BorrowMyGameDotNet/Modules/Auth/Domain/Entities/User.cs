@@ -1,10 +1,14 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace BorrowMyGameDotNet.Modules.Auth.Domain.Entities
 {
     public class User
     {
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
@@ -13,7 +17,7 @@ namespace BorrowMyGameDotNet.Modules.Auth.Domain.Entities
         {
         }
 
-        public User(int id, string email, string password, string role)
+        public User(string id, string email, string password, string role)
         {
             Id = id;
             Email = email;

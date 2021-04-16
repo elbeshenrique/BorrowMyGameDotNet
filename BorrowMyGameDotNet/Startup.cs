@@ -1,5 +1,4 @@
 using System.Text;
-using BorrowMyGameDotNet.Data;
 using BorrowMyGameDotNet.Modules.Auth.Application.Usecases;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Repositories;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Usecases;
@@ -21,6 +20,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Threading.Tasks;
+using BorrowMyGameDotNet.Data.Contexts;
+using System;
+using BorrowMyGameDotNet.Data.MongoDB;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
 
 namespace BorrowMyGameDotNet
 {
@@ -35,12 +40,36 @@ namespace BorrowMyGameDotNet
 
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureMongoDB(services);
+
             services.AddControllers();
 
             ConfigureSwagger(services);
             ConfigureEntityFramework(services);
             ConfigureAuthentication(services);
             InjectDependencies(services);
+        }
+
+        private void ConfigureMongoDB(IServiceCollection services)
+        {
+            services.Configure<MongoDBDatabaseSettings>(
+                Configuration.GetSection(nameof(MongoDBDatabaseSettings))
+            );
+
+            services.AddSingleton<IMongoDBDatabaseSettings>(serviceProvider =>
+            {
+                var mongoDBSettings = serviceProvider.GetRequiredService<IOptions<MongoDBDatabaseSettings>>().Value;
+
+                var client = new MongoClient(mongoDBSettings.ConnectionString);
+                var database = client.GetDatabase(mongoDBSettings.DatabaseName);
+                var userColletion = database.GetCollection<User>(mongoDBSettings.UsersCollectionName);
+                if (userColletion == null)
+                {
+                    database.CreateCollection(mongoDBSettings.UsersCollectionName);
+                }
+
+                return mongoDBSettings;
+            });
         }
 
         private void ConfigureSwagger(IServiceCollection services)

@@ -1,1 +1,3 @@
-FROM mongo:4.4.5-bionic
+FROM mongo
+
+COPY MongoDB/init_script.js /docker-entrypoint-initdb.d/

@@ -7,7 +7,7 @@ services:
         ports:
             - 5000:5000
             - 5001:5001
-        depends_on: 
+        depends_on:
             - mysql
             - mongo
 
@@ -52,6 +52,8 @@ services:
             dockerfile: Dockerfiles/Mongo.dockerfile
         volumes:
             - mongo:/data/db
+        ports:
+            - 27017:27017
         env_file:
             - .env
 
@@ -60,10 +62,8 @@ services:
         restart: always
         ports:
             - 8081:8081
-        environment:
+        env_file:
             - .env
-        depends_on: 
-            - mongo
 
 volumes:
     mysql:

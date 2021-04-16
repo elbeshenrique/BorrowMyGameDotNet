@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
+using BorrowMyGameDotNet.Modules.Auth.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Usecases;
 using BorrowMyGameDotNet.Modules.Auth.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,14 @@ namespace BorrowMyGameDotNet.Controllers
 
                 var token = GenerateUserToken(user);
                 return Ok(token);
+            }
+            catch (InvalidInputException)
+            {
+                return BadRequest();
+            }
+            catch (InvalidCredentialsException)
+            {
+                return Unauthorized();
             }
             catch
             {

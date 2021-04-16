@@ -9,7 +9,9 @@ namespace BorrowMyGameDotNet.Modules.Auth.Application.Usecases
 {
     public class UserUsecase : IUserUsecase
     {
-        private const string UserAuthenticationFailure = "User authentication failure.";
+        private const string UserAuthenticationFailureMessage = "User authentication failure.";
+        private const string InvalidCredentialsMessage = "Invalid credentials.";
+        private const string InvalidInputMessage = "Invalid login input.";
 
         private IUserRepository repository;
 
@@ -20,15 +22,23 @@ namespace BorrowMyGameDotNet.Modules.Auth.Application.Usecases
 
         public async Task<User> GetAuthenticated(LoginInput loginInput)
         {
-            try
+            if (loginInput == null)
             {
-                var user = await repository.GetAuthenticated(loginInput);
-                return user;
+                throw new InvalidInputException(InvalidInputMessage);
             }
-            catch (Exception exception)
+
+            var user = await repository.Get(loginInput.Email);
+            if (user == null)
             {
-                throw new UserUsecaseException(UserAuthenticationFailure, exception);
+                return null;
             }
+
+            if (user.Password != loginInput.Password)
+            {
+                throw new InvalidCredentialsException(InvalidCredentialsMessage);
+            }
+
+            return user;
         }
     }
 }
