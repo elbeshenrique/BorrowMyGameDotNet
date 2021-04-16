@@ -6,8 +6,10 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases
 {
     public interface IGameUsecase
     {
-        IEnumerable<GameOutput> GetAll();
-        GameOutput Create(GameInput gameInput);
-        GameOutput Update(int id, GameInput gameInput);
+        Task<IEnumerable<GameOutput>> GetAll();
+        Task<GameOutput> Find(int id);
+        Task<GameOutput> Create(GameInput gameInput);
+        Task Update(int id, GameInput gameInput);
+        Task UpdateIsBorrowed(int id, bool isBorrowed);
     }
 }

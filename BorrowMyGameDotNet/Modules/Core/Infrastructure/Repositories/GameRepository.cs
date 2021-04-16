@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BorrowMyGameDotNet.Data;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
 {
@@ -19,11 +21,11 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             _gamePresenter = gamePresenter;
         }
 
-        public IEnumerable<Game> GetAll()
+        public async Task<IEnumerable<Game>> GetAll()
         {
             try
             {
-                var games = _dbContext.Games;
+                var games = await _dbContext.Games.ToListAsync();
                 return games;
             }
             catch (Exception exception)
@@ -32,12 +34,12 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public void Create(Game game)
+        public async Task Create(Game game)
         {
             try
             {
                 _dbContext.Games.Add(game);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -45,11 +47,11 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public Game Find(int id)
+        public async Task<Game> Find(int id)
         {
             try
             {
-                var game = _dbContext.Games.Find(id);
+                var game = await _dbContext.Games.FindAsync(id);
                 return game;
             }
             catch (Exception exception)
@@ -58,12 +60,27 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public void Update(int id, Game game)
+        public async Task Update(int id, Game game)
         {
             try
             {
                 _dbContext.Games.Update(game);
-                _dbContext.SaveChanges();
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                throw new GameRepositoryException(exception);
+            }
+        }
+
+        public async Task UpdateIsBorrowed(Game game, bool isBorrowed)
+        {
+            try
+            {
+                var isBorrowedProperty = _dbContext.Entry(game).Property(g => g.IsBorrowed);
+                isBorrowedProperty.IsModified = true;
+                
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
             {

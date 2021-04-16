@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
@@ -11,6 +12,14 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
     public class GameUsecase : IGameUsecase
     {
 
+        private const string FailureGettingGameData = "Failure on getting games data.";
+        private const string FailureCreatingGameData = "Failure on creating game data.";
+        private const string FailureUpdatingGameData = "Failure on updating game data.";
+        private const string GameNotFound = "Game with id: {0} not found.";
+        private const string InvalidGameInput = "Invalid game input.";
+        private const string EmptyGameTitle = "Game title cannot be empty.";
+
+
         private readonly IGameRepository _repository;
         private readonly IGamePresenter _presenter;
 
@@ -20,21 +29,44 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             _presenter = presenter;
         }
 
-        public IEnumerable<GameOutput> GetAll()
+        public async Task<IEnumerable<GameOutput>> GetAll()
         {
             try
             {
-                var games = _repository.GetAll();
+                var games = await _repository.GetAll();
                 var gameOutputs = _presenter.ToOutputs(games);
                 return gameOutputs;
             }
             catch (Exception exception)
             {
-                throw new GameUsecaseException("Failure on getting games data.", exception);
+                throw new GameUsecaseException(FailureGettingGameData, exception);
             }
         }
 
-        public GameOutput Create(GameInput gameInput)
+        public async Task<GameOutput> Find(int id)
+        {
+            try
+            {
+                var game = await _repository.Find(id);
+                if (game == null)
+                {
+                    throw new NotFoundException(String.Format(GameNotFound, id));
+                }
+
+                var gameOutput = _presenter.ToOutput(game);
+                return gameOutput;
+            }
+            catch (NotFoundException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new GameUsecaseException(FailureCreatingGameData, exception);
+            }
+        }
+
+        public async Task<GameOutput> Create(GameInput gameInput)
         {
             try
             {
@@ -46,38 +78,54 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
                     IsBorrowed = gameInput.IsBorrowed
                 };
 
-                _repository.Create(game);
+                await _repository.Create(game);
                 var gameOutput = _presenter.ToOutput(game);
                 return gameOutput;
             }
             catch (Exception exception)
             {
-                throw new GameUsecaseException("Failure on creating game data.", exception);
+                throw new GameUsecaseException(FailureCreatingGameData, exception);
             }
         }
 
-        public GameOutput Update(int id, GameInput gameInput)
+        public async Task Update(int id, GameInput gameInput)
         {
             try
             {
                 ValidateGameInput(gameInput);
 
-                var game = _repository.Find(id);
+                var game = await _repository.Find(id);
                 if (game == null)
                 {
-                    throw new Exception($"Game with id: {id} not found.");
+                    throw new NotFoundException(String.Format(GameNotFound, id));
                 }
 
                 game.Title = gameInput.Title;
                 game.IsBorrowed = gameInput.IsBorrowed;
-                _repository.Update(id, game);
-
-                var gameOutput = _presenter.ToOutput(game);
-                return gameOutput;
+                await _repository.Update(id, game);
             }
             catch (Exception exception)
             {
-                throw new GameUsecaseException("Failure on updating game data.", exception);
+                throw new GameUsecaseException(FailureUpdatingGameData, exception);
+            }
+        }
+
+        public async Task UpdateIsBorrowed(int id, bool isBorrowed)
+        {
+            try
+            {
+                var game = await _repository.Find(id);
+                if (game == null)
+                {
+                    throw new NotFoundException(String.Format(GameNotFound, id));
+                }
+
+                game.IsBorrowed = isBorrowed;
+                await _repository.UpdateIsBorrowed(game, isBorrowed);
+            }
+            catch (Exception exception)
+            {
+                throw new GameUsecaseException(FailureUpdatingGameData, exception);
             }
         }
 
@@ -85,13 +133,14 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         {
             if (gameInput == null)
             {
-                throw new Exception("Invalid game data.");
+                throw new InvalidInputException(InvalidGameInput);
             }
 
             if (String.IsNullOrEmpty(gameInput.Title))
             {
-                throw new Exception("Game title cannot be empty.");
+                throw new InvalidInputException(EmptyGameTitle);
             }
         }
+
     }
 }

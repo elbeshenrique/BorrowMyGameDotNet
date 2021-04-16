@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
-using System;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BorrowMyGameDotNet.Controllers
 {
@@ -31,56 +31,84 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<GameOutput>> Get()
+        public async Task<ActionResult<IEnumerable<GameOutput>>> Get()
         {
             try
             {
-                var gameOutputs = _gameUsecase.GetAll();
+                var gameOutputs = await _gameUsecase.GetAll();
                 return Ok(gameOutputs);
             }
             catch (GameUsecaseException exception)
             {
                 return BadRequest(exception.Message);
             }
-            catch (Exception exception)
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GameOutput>> Get(int id)
+        {
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                var gameOutput = await _gameUsecase.Find(id);
+                return Ok(gameOutput);
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (GameUsecaseException exception)
+            {
+                return BadRequest(exception.Message);
             }
         }
 
         [HttpPost]
-        public ActionResult<GameOutput> Post([FromBody] GameInput gameInput)
+        public async Task<ActionResult<GameOutput>> Post([FromBody] GameInput gameInput)
         {
             try
             {
-                var gameOutput = _gameUsecase.Create(gameInput);
+                var gameOutput = await _gameUsecase.Create(gameInput);
                 return StatusCode(StatusCodes.Status201Created, gameOutput);
             }
             catch (GameUsecaseException exception)
             {
                 return BadRequest(exception.Message);
             }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-            }
         }
 
         [HttpPut("{id}")]
-        public ActionResult<GameOutput> Put(int id, [FromBody] GameInput gameInput)
+        public async Task<ActionResult> Put(int id, [FromBody] GameInput gameInput)
         {
             try
             {
-                var gameOutput = _gameUsecase.Update(id, gameInput);
-                return StatusCode(StatusCodes.Status200OK, gameOutput);
+                await _gameUsecase.Update(id, gameInput);
+                return NoContent();
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
             }
             catch (GameUsecaseException exception)
             {
                 return BadRequest(exception.Message);
             }
-            catch (Exception exception)
+        }
+
+        [HttpPatch("{id}/borrow")]
+        public async Task<ActionResult> UpdateIsBorrowed(int id, [FromBody] bool isBorrowed)
+        {
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                await _gameUsecase.UpdateIsBorrowed(id, isBorrowed);
+                return NoContent();
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (GameUsecaseException exception)
+            {
+                return BadRequest(exception.Message);
             }
         }
     }

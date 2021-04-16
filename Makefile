@@ -9,3 +9,10 @@ down:
 
 logs:
 	docker-compose logs -f
+
+db-up:
+	docker-compose up -d mysql
+
+db-down:
+	docker-compose stop mysql
+
