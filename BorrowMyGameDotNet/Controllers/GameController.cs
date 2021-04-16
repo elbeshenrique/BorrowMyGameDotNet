@@ -16,20 +16,17 @@ namespace BorrowMyGameDotNet.Controllers
     {
 
         private ApplicationDbContext _dbContext;
-        private ISaveNewGameUsecase _saveNewGame;
-        private IGetAllGamesUsecase _getAllGames;
+        private IGameUsecase _gameUsecase;
         private IGamePresenter _gamePresenter;
 
         public GameController(
             ApplicationDbContext dbContext,
-            ISaveNewGameUsecase saveNewGame,
-            IGetAllGamesUsecase getAllGames,
+            IGameUsecase gameUsecase,
             IGamePresenter gamePresenter
         )
         {
             _dbContext = dbContext;
-            _saveNewGame = saveNewGame;
-            _getAllGames = getAllGames;
+            _gameUsecase = gameUsecase;
             _gamePresenter = gamePresenter;
         }
 
@@ -38,12 +35,12 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                var gameOutputs = _getAllGames.Execute();
+                var gameOutputs = _gameUsecase.GetAll();
                 return Ok(gameOutputs);
             }
-            catch (GetAllGamesException exception)
+            catch (GameUsecaseException exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                return BadRequest(exception.Message);
             }
             catch (Exception exception)
             {
@@ -56,12 +53,12 @@ namespace BorrowMyGameDotNet.Controllers
         {
             try
             {
-                var gameOutput = _saveNewGame.Execute(gameInput);
+                var gameOutput = _gameUsecase.Create(gameInput);
                 return StatusCode(StatusCodes.Status201Created, gameOutput);
             }
-            catch (SaveNewGameException exception)
+            catch (GameUsecaseException exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+                return BadRequest(exception.Message);
             }
             catch (Exception exception)
             {
@@ -69,21 +66,22 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
-        // [HttpPut]
-        // public ActionResult<GameOutput> Put(int id, [FromBody] GameInput gameInput)
-        // {
-        //     try
-        //     {
-                
-        //     }
-        //     catch (SaveNewGameException exception)
-        //     {
-        //         return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-        //     }
-        //     catch (Exception exception)
-        //     {
-        //         return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
-        //     }
-        // }
+        [HttpPut("{id}")]
+        public ActionResult<GameOutput> Put(int id, [FromBody] GameInput gameInput)
+        {
+            try
+            {
+                var gameOutput = _gameUsecase.Update(id, gameInput);
+                return StatusCode(StatusCodes.Status200OK, gameOutput);
+            }
+            catch (GameUsecaseException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
     }
 }

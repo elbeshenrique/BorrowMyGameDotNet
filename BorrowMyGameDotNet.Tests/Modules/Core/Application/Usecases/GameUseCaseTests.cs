@@ -10,7 +10,7 @@ using Xunit;
 
 namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
 {
-    public class GetAllGamesUseCaseTests
+    public class GameUseCaseTests
     {
         [Fact]
         public void GetAll_ShouldWork()
@@ -31,8 +31,8 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
                 .Setup(presenter => presenter.ToOutputs(It.IsAny<IEnumerable<Game>>()))
                 .Returns(gameOutputs);
 
-            var getAllGames = new GetAllGamesUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
-            var getAllGamesResult = getAllGames.Execute();
+            var getAllGames = new GameUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
+            var getAllGamesResult = getAllGames.GetAll();
 
             Assert.Equal(getAllGamesResult, gameOutputs);
         }
@@ -46,11 +46,11 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
                 .Throws<GameRepositoryException>();
 
             var gamePresenterMock = new Mock<IGamePresenter>();
+            var getAllGames = new GameUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
 
-            Assert.Throws<GetAllGamesException>(() =>
+            Assert.Throws<GameUsecaseException>(() =>
             {
-                var getAllGames = new GetAllGamesUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
-                var games = getAllGames.Execute();
+                var games = getAllGames.GetAll();
             });
         }
 
@@ -58,16 +58,17 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
         public void GetAll_PresenterErrorShouldFail()
         {
             var gameRepositoryMock = new Mock<IGameRepository>();
-            
+
             var gamePresenterMock = new Mock<IGamePresenter>();
             gamePresenterMock
                 .Setup(presenter => presenter.ToOutputs(It.IsAny<IEnumerable<Game>>()))
                 .Throws<Exception>();
 
-            Assert.Throws<GetAllGamesException>(() =>
+            var getAllGames = new GameUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
+
+            Assert.Throws<GameUsecaseException>(() =>
             {
-                var getAllGames = new GetAllGamesUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
-                var games = getAllGames.Execute();
+                var games = getAllGames.GetAll();
             });
         }
     }

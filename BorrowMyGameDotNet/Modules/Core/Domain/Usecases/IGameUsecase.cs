@@ -4,8 +4,10 @@ using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases
 {
-    public interface IGetAllGamesUsecase
+    public interface IGameUsecase
     {
-        IEnumerable<GameOutput> Execute();
+        IEnumerable<GameOutput> GetAll();
+        GameOutput Create(GameInput gameInput);
+        GameOutput Update(int id, GameInput gameInput);
     }
 }

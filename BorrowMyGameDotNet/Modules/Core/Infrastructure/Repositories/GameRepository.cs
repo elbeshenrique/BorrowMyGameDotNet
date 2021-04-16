@@ -44,5 +44,31 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
                 throw new GameRepositoryException(exception);
             }
         }
+
+        public Game Find(int id)
+        {
+            try
+            {
+                var game = _dbContext.Games.Find(id);
+                return game;
+            }
+            catch (Exception exception)
+            {
+                throw new GameRepositoryException(exception);
+            }
+        }
+
+        public void Update(int id, Game game)
+        {
+            try
+            {
+                _dbContext.Games.Update(game);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                throw new GameRepositoryException(exception);
+            }
+        }
     }
 }

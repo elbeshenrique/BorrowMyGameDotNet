@@ -39,8 +39,7 @@ namespace BorrowMyGameDotNet
 
             services.AddTransient<IGamePresenter, GamePresenter>();
             services.AddTransient<IGameRepository, GameRepository>();
-            services.AddTransient<ISaveNewGameUsecase, SaveNewGameUsecase>();
-            services.AddTransient<IGetAllGamesUsecase, GetAllGamesUsecase>();
+            services.AddTransient<IGameUsecase, GameUsecase>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

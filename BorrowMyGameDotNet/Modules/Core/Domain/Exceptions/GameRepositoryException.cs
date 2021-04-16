@@ -2,19 +2,20 @@ using System;
 
 namespace BorrowMyGameDotNet.Modules.Core.Domain.Exceptions
 {
-    public class GetAllGamesException : BorrowMyGameException
+    public class GameRepositoryException : BorrowMyGameDotNetException
     {
 
-        private const string FailureGettingAll = "Failure on getting all games list.";
+        private const string GameRepositoryFailureMessage = "Game repository failure.";
 
-        public GetAllGamesException()
-            : base(FailureGettingAll)
+        public GameRepositoryException()
+            : base(GameRepositoryFailureMessage)
         {
         }
 
-        public GetAllGamesException(Exception innerException)
-            : base(FailureGettingAll, innerException)
+        public GameRepositoryException(Exception innerException)
+            : base(GameRepositoryFailureMessage, innerException)
         {
+
         }
     }
 }
