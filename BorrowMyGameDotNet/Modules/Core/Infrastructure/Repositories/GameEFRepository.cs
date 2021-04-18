@@ -13,9 +13,9 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
     public class GameEFRepository : IGameRepository
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly IGamePresenter presenter;
+        private readonly IFriendPresenter presenter;
 
-        public GameEFRepository(ApplicationDbContext dbContext, IGamePresenter presenter)
+        public GameEFRepository(ApplicationDbContext dbContext, IFriendPresenter presenter)
         {
             this.dbContext = dbContext;
             this.presenter = presenter;

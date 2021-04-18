@@ -17,12 +17,12 @@ namespace BorrowMyGameDotNet.Controllers
     {
         private ApplicationDbContext dbContext;
         private IGameUsecase gameUsecase;
-        private IGamePresenter gamePresenter;
+        private IFriendPresenter gamePresenter;
 
         public GameController(
             ApplicationDbContext dbContext,
             IGameUsecase gameUsecase,
-            IGamePresenter gamePresenter
+            IFriendPresenter gamePresenter
         )
         {
             this.dbContext = dbContext;

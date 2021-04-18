@@ -27,6 +27,7 @@ using MongoDB.Driver;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
 using BorrowMyGameDotNet.Constants;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Friend;
 
 namespace BorrowMyGameDotNet
 {
@@ -87,6 +88,13 @@ namespace BorrowMyGameDotNet
                 options =>
                 {
                     var mysqlHost = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlHost);
+
+                    if (String.IsNullOrEmpty(mysqlHost))
+                    {
+                        options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
+                        return;
+                    }
+
                     var mysqlDatabase = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlDatabase);
                     var mysqlUsername = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlUsername);
                     var mysqlPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlPassword);
@@ -145,6 +153,10 @@ namespace BorrowMyGameDotNet
             services.AddTransient<IGamePresenter, GamePresenter>();
             services.AddTransient<IGameRepository, GameEFRepository>();
             services.AddTransient<IGameUsecase, GameUsecase>();
+
+            services.AddTransient<IFriendPresenter, FriendPresenter>();
+            services.AddTransient<IFriendRepository, FriendEFRepository>();
+            services.AddTransient<IFriendUsecase, FriendUsecase>();
 
             services.AddTransient<IUserRepository, UserMongoDBRepository>();
             services.AddTransient<IUserUsecase, UserUsecase>();

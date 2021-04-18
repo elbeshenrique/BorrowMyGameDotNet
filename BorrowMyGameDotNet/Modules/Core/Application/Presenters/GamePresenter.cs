@@ -7,10 +7,10 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Presenters
 {
     public class GamePresenter : IGamePresenter
     {
-
         public GameOutput ToOutput(Game game)
         {
-            return new GameOutput {
+            return new GameOutput
+            {
                 Id = game.Id,
                 Title = game.Title,
                 IsBorrowed = game.IsBorrowed
