@@ -5,7 +5,7 @@ using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
-using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 
 namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
 {

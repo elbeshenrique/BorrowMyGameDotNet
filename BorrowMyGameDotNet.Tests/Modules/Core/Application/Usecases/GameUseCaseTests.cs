@@ -5,6 +5,7 @@ using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 using Moq;
 using Xunit;
 

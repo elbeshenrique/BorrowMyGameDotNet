@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 
-namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases
+namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game
 {
     public interface IGameUsecase
     {

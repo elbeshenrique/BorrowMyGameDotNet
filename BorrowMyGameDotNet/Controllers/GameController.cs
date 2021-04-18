@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
-using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using BorrowMyGameDotNet.Data.Contexts;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 
 namespace BorrowMyGameDotNet.Controllers
 {

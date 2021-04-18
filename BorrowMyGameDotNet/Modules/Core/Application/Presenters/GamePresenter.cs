@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BorrowMyGameDotNet.Modules.Core.Domain.Entities;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 
 namespace BorrowMyGameDotNet.Modules.Core.Application.Presenters
 {

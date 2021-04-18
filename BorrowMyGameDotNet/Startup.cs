@@ -8,7 +8,6 @@ using BorrowMyGameDotNet.Modules.Core.Application.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Application.Usecases;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Repositories;
-using BorrowMyGameDotNet.Modules.Core.Domain.Usecases;
 using BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +26,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
 using BorrowMyGameDotNet.Constants;
+using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 
 namespace BorrowMyGameDotNet
 {

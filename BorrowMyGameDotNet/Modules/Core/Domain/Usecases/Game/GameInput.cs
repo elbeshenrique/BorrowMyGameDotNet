@@ -1,4 +1,4 @@
-namespace BorrowMyGameDotNet.Modules.Core.Domain.Entities
+namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game
 {
     public class GameInput
     {
