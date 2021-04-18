@@ -26,6 +26,7 @@ using BorrowMyGameDotNet.Data.MongoDB;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
+using BorrowMyGameDotNet.Constants;
 
 namespace BorrowMyGameDotNet
 {
@@ -52,24 +53,24 @@ namespace BorrowMyGameDotNet
 
         private void ConfigureMongoDB(IServiceCollection services)
         {
-            services.Configure<MongoDBDatabaseSettings>(
-                Configuration.GetSection(nameof(MongoDBDatabaseSettings))
-            );
-
-            services.AddSingleton<IMongoDBDatabaseSettings>(serviceProvider =>
+            services.AddTransient<IMongoClient>(serviceProvider =>
             {
-                var mongoDBSettings = serviceProvider.GetRequiredService<IOptions<MongoDBDatabaseSettings>>().Value;
-
-                var client = new MongoClient(mongoDBSettings.ConnectionString);
-                var database = client.GetDatabase(mongoDBSettings.DatabaseName);
-                var userColletion = database.GetCollection<User>(mongoDBSettings.UsersCollectionName);
-                if (userColletion == null)
-                {
-                    database.CreateCollection(mongoDBSettings.UsersCollectionName);
-                }
-
-                return mongoDBSettings;
+                var mongoDBHost = Environment.GetEnvironmentVariable(EnvironmentVariables.MongoDBHost);
+                var mongoDBUsername = Environment.GetEnvironmentVariable(EnvironmentVariables.MongoDBUsername);
+                var mongoDBPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.MongoDBPassword);
+                var connectionString = $"mongodb://{mongoDBUsername}:{mongoDBPassword}@{mongoDBHost}:27017/?authSource=admin";
+                return new MongoClient(connectionString);
             });
+
+
+            services.AddTransient<IMongoDatabase>(serviceProvider =>
+            {
+                var mongoDBDatabase = Environment.GetEnvironmentVariable(EnvironmentVariables.MongoDBDatabase);
+                var client = serviceProvider.GetService<IMongoClient>();
+                return client.GetDatabase(mongoDBDatabase);
+            });
+
+            services.AddTransient<MongoDBDatabase>();
         }
 
         private void ConfigureSwagger(IServiceCollection services)
@@ -83,7 +84,16 @@ namespace BorrowMyGameDotNet
         private void ConfigureEntityFramework(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"))
+                options =>
+                {
+                    var mysqlHost = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlHost);
+                    var mysqlDatabase = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlDatabase);
+                    var mysqlUsername = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlUsername);
+                    var mysqlPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlPassword);
+
+                    var connectionString = $"server={mysqlHost};port=3306;database={mysqlDatabase};uid={mysqlUsername};password={mysqlPassword}";
+                    options.UseMySQL(connectionString);
+                }
             );
         }
 

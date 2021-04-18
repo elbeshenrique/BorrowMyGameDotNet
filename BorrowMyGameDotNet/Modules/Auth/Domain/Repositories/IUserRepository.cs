@@ -5,6 +5,6 @@ namespace BorrowMyGameDotNet.Modules.Auth.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> Get(string email);
+        Task<User> GetAsync(string email);
     }
 }

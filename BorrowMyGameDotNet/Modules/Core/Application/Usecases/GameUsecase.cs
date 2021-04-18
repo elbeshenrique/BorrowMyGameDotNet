@@ -11,7 +11,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
 {
     public class GameUsecase : IGameUsecase
     {
-        private const string FailureGettingGameDataMessage = "Failure on getting games data.";
+        private const string FailureGettingGameDataMessage = "Failure on getting game data.";
         private const string FailureCreatingGameDataMessage = "Failure on creating game data.";
         private const string FailureUpdatingGameDataMessage = "Failure on updating game data.";
         private const string GameNotFoundMessage = "Game with id: {0} not found.";
@@ -27,11 +27,11 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             this.presenter = presenter;
         }
 
-        public async Task<IEnumerable<GameOutput>> GetAll()
+        public async Task<IEnumerable<GameOutput>> GetAllAsync()
         {
             try
             {
-                var games = await repository.GetAll();
+                var games = await repository.GetAllAsync();
                 var gameOutputs = presenter.ToOutputs(games);
                 return gameOutputs;
             }
@@ -41,11 +41,11 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             }
         }
 
-        public async Task<GameOutput> Find(int id)
+        public async Task<GameOutput> FindAsync(int id)
         {
             try
             {
-                var game = await repository.Find(id);
+                var game = await repository.FindAsync(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFoundMessage, id));
@@ -64,7 +64,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             }
         }
 
-        public async Task<GameOutput> Create(GameInput gameInput)
+        public async Task<GameOutput> CreateAsync(GameInput gameInput)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
                     IsBorrowed = gameInput.IsBorrowed
                 };
 
-                await repository.Create(game);
+                await repository.CreateAsync(game);
                 var gameOutput = presenter.ToOutput(game);
                 return gameOutput;
             }
@@ -86,13 +86,13 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             }
         }
 
-        public async Task Update(int id, GameInput gameInput)
+        public async Task UpdateAsync(int id, GameInput gameInput)
         {
             try
             {
                 ValidateGameInput(gameInput);
 
-                var game = await repository.Find(id);
+                var game = await repository.FindAsync(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFoundMessage, id));
@@ -100,7 +100,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
 
                 game.Title = gameInput.Title;
                 game.IsBorrowed = gameInput.IsBorrowed;
-                await repository.Update(id, game);
+                await repository.UpdateAsync(id, game);
             }
             catch (Exception exception)
             {
@@ -108,18 +108,18 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             }
         }
 
-        public async Task UpdateIsBorrowed(int id, bool isBorrowed)
+        public async Task UpdateIsBorrowedAsync(int id, bool isBorrowed)
         {
             try
             {
-                var game = await repository.Find(id);
+                var game = await repository.FindAsync(id);
                 if (game == null)
                 {
                     throw new NotFoundException(String.Format(GameNotFoundMessage, id));
                 }
 
                 game.IsBorrowed = isBorrowed;
-                await repository.UpdateIsBorrowed(game, isBorrowed);
+                await repository.UpdateIsBorrowedAsync(game, isBorrowed);
             }
             catch (Exception exception)
             {

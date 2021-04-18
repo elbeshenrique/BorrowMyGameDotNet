@@ -20,14 +20,14 @@ namespace BorrowMyGameDotNet.Modules.Auth.Application.Usecases
             this.repository = userRepository;
         }
 
-        public async Task<User> GetAuthenticated(LoginInput loginInput)
+        public async Task<User> GetAuthenticatedAsync(LoginInput loginInput)
         {
             if (loginInput == null)
             {
                 throw new InvalidInputException(InvalidInputMessage);
             }
 
-            var user = await repository.Get(loginInput.Email);
+            var user = await repository.GetAsync(loginInput.Email);
             if (user == null)
             {
                 return null;

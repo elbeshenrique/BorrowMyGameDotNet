@@ -6,10 +6,10 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Repositories
 {
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetAll();
-        Task<Game> Find(int id);
-        Task Create(Game game);
-        Task Update(int id, Game game);
-        Task UpdateIsBorrowed(Game game, bool isBorrowed);
+        Task<IEnumerable<Game>> GetAllAsync();
+        Task<Game> FindAsync(int id);
+        Task CreateAsync(Game game);
+        Task UpdateAsync(int id, Game game);
+        Task UpdateIsBorrowedAsync(Game game, bool isBorrowed);
     }
 }

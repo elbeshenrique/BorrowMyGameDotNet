@@ -29,7 +29,7 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
                 .Returns(gameOutputs);
 
             var getAllGames = new GameUsecase(gameRepositoryMock.Object, gamePresenterMock.Object);
-            var getAllGamesResult = await getAllGames.GetAll();
+            var getAllGamesResult = await getAllGames.GetAllAsync();
 
             Assert.Equal(getAllGamesResult, gameOutputs);
         }
@@ -39,7 +39,7 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
         {
             var gameRepositoryMock = new Mock<IGameRepository>();
             gameRepositoryMock
-                .Setup(repository => repository.GetAll())
+                .Setup(repository => repository.GetAllAsync())
                 .Throws<GameRepositoryException>();
 
             var gamePresenterMock = new Mock<IGamePresenter>();
@@ -47,7 +47,7 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
 
             await Assert.ThrowsAsync<GameUsecaseException>(async () =>
             {
-                var games = await getAllGames.GetAll();
+                var games = await getAllGames.GetAllAsync();
             });
         }
 
@@ -65,7 +65,7 @@ namespace BorrowMyGameDotNet.Tests.Modules.Core.Application.Usecases
 
             await Assert.ThrowsAsync<GameUsecaseException>(async () =>
             {
-                var games = await getAllGames.GetAll();
+                var games = await getAllGames.GetAllAsync();
             });
         }
     }

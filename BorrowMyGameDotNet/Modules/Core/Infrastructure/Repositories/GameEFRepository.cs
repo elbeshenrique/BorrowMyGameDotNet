@@ -21,7 +21,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             this.presenter = presenter;
         }
 
-        public async Task<IEnumerable<Game>> GetAll()
+        public async Task<IEnumerable<Game>> GetAllAsync()
         {
             try
             {
@@ -34,7 +34,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public async Task Create(Game game)
+        public async Task CreateAsync(Game game)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public async Task<Game> Find(int id)
+        public async Task<Game> FindAsync(int id)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public async Task Update(int id, Game game)
+        public async Task UpdateAsync(int id, Game game)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateIsBorrowed(Game game, bool isBorrowed)
+        public async Task UpdateIsBorrowedAsync(Game game, bool isBorrowed)
         {
             try
             {

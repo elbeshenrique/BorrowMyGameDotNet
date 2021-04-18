@@ -25,11 +25,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginInput loginInput)
+        public async Task<ActionResult> LoginAsync([FromBody] LoginInput loginInput)
         {
             try
             {
-                var user = await userUsecase.GetAuthenticated(loginInput);
+                var user = await userUsecase.GetAuthenticatedAsync(loginInput);
                 if (user == null)
                 {
                     return Unauthorized();

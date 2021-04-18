@@ -5,6 +5,6 @@ namespace BorrowMyGameDotNet.Modules.Auth.Domain.Usecases
 {
     public interface IUserUsecase
     {
-        Task<User> GetAuthenticated(LoginInput loginInput);
+        Task<User> GetAuthenticatedAsync(LoginInput loginInput);
     }
 }

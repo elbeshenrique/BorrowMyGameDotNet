@@ -32,11 +32,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameOutput>>> Get()
+        public async Task<ActionResult<IEnumerable<GameOutput>>> GetAsync()
         {
             try
             {
-                var gameOutputs = await gameUsecase.GetAll();
+                var gameOutputs = await gameUsecase.GetAllAsync();
                 return Ok(gameOutputs);
             }
             catch (GameUsecaseException exception)
@@ -46,11 +46,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GameOutput>> Get(int id)
+        public async Task<ActionResult<GameOutput>> GetAsync(int id)
         {
             try
             {
-                var gameOutput = await gameUsecase.Find(id);
+                var gameOutput = await gameUsecase.FindAsync(id);
                 return Ok(gameOutput);
             }
             catch (NotFoundException exception)
@@ -64,11 +64,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GameOutput>> Post([FromBody] GameInput gameInput)
+        public async Task<ActionResult<GameOutput>> PostAsync([FromBody] GameInput gameInput)
         {
             try
             {
-                var gameOutput = await gameUsecase.Create(gameInput);
+                var gameOutput = await gameUsecase.CreateAsync(gameInput);
                 return StatusCode(StatusCodes.Status201Created, gameOutput);
             }
             catch (GameUsecaseException exception)
@@ -78,11 +78,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] GameInput gameInput)
+        public async Task<ActionResult> PutAsync(int id, [FromBody] GameInput gameInput)
         {
             try
             {
-                await gameUsecase.Update(id, gameInput);
+                await gameUsecase.UpdateAsync(id, gameInput);
                 return NoContent();
             }
             catch (NotFoundException exception)
@@ -96,11 +96,11 @@ namespace BorrowMyGameDotNet.Controllers
         }
 
         [HttpPatch("{id}/borrow")]
-        public async Task<ActionResult> UpdateIsBorrowed(int id, [FromBody] bool isBorrowed)
+        public async Task<ActionResult> UpdateIsBorrowedAsync(int id, [FromBody] bool isBorrowed)
         {
             try
             {
-                await gameUsecase.UpdateIsBorrowed(id, isBorrowed);
+                await gameUsecase.UpdateIsBorrowedAsync(id, isBorrowed);
                 return NoContent();
             }
             catch (NotFoundException exception)

@@ -10,20 +10,18 @@ namespace BorrowMyGameDotNet.Modules.Auth.Infrastructure
 {
     public class UserMongoDBRepository : IUserRepository
     {
-        private readonly IMongoCollection<User> users;
+        private readonly IMongoCollection<User> usersCollection;
 
-        public UserMongoDBRepository(IMongoDBDatabaseSettings settings)
+        public UserMongoDBRepository(MongoDBDatabase mongoDBDatabase)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            users = database.GetCollection<User>(settings.UsersCollectionName);
+            usersCollection = mongoDBDatabase.GetUsersCollection();
         }
 
-        public async Task<User> Get(string email)
+        public async Task<User> GetAsync(string email)
         {
             try
             {
-                var asyncQuery = await users.FindAsync<User>(u => u.Email == email);
+                var asyncQuery = await usersCollection.FindAsync<User>(u => u.Email == email);
                 var user = asyncQuery.FirstOrDefault();
                 return user;
             }
