@@ -23,7 +23,7 @@ services:
         volumes:
             - ./Nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
         depends_on:
-            #     - backend
+            #     - borrowmygamedotnet
             - frontend
 
     frontend:
