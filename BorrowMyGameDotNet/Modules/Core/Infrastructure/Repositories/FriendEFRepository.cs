@@ -72,5 +72,18 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
                 throw new FriendRepositoryException(exception);
             }
         }
+
+        public async Task DeleteAsync(Friend friend)
+        {
+            try
+            {
+                dbContext.Friends.Remove(friend);
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                throw new FriendRepositoryException(exception);
+            }
+        }
     }
 }

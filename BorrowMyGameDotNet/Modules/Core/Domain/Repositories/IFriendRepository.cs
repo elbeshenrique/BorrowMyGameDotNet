@@ -10,5 +10,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Repositories
         Task<Friend> FindAsync(int id);
         Task CreateAsync(Friend friend);
         Task UpdateAsync(int id, Friend friend);
+        Task DeleteAsync(Friend friend);
     }
 }

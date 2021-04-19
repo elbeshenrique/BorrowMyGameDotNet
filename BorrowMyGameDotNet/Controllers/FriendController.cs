@@ -91,5 +91,23 @@ namespace BorrowMyGameDotNet.Controllers
                 return BadRequest(exception.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await FriendUsecase.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (FriendUsecaseException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
     }
 }

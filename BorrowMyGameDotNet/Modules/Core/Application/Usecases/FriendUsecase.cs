@@ -14,6 +14,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         private const string FailureGettingFriendDataMessage = "Failure on getting friend data.";
         private const string FailureCreatingFriendDataMessage = "Failure on creating friend data.";
         private const string FailureUpdatingFriendDataMessage = "Failure on updating friend data.";
+        private const string FailureDeletingFriendDataMessage = "Failure on deleting friend data.";
         private const string FriendNotFoundMessage = "Friend with id: {0} not found.";
         private const string InvalidFriendInputMessage = "Invalid friend input.";
         private const string EmptyFriendNameMessage = "Friend name cannot be empty.";
@@ -103,6 +104,24 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             catch (Exception exception)
             {
                 throw new FriendUsecaseException(FailureUpdatingFriendDataMessage, exception);
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var friend = await repository.FindAsync(id);
+                if (friend == null)
+                {
+                    throw new NotFoundException(String.Format(FriendNotFoundMessage, id));
+                }
+
+                await repository.DeleteAsync(friend);
+            }
+            catch (Exception exception)
+            {
+                throw new FriendUsecaseException(FailureDeletingFriendDataMessage, exception);
             }
         }
 

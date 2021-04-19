@@ -9,5 +9,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Friend
         Task<FriendOutput> FindAsync(int id);
         Task<FriendOutput> CreateAsync(FriendInput friendInput);
         Task UpdateAsync(int id, FriendInput friendInput);
+        Task DeleteAsync(int id);    
     }
 }
