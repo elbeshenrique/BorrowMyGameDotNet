@@ -33,6 +33,9 @@ namespace BorrowMyGameDotNet
 {
     public class Startup
     {
+
+        private const string AllowSpecificOrigins = "AllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -42,10 +45,23 @@ namespace BorrowMyGameDotNet
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureMongoDB(services);
-
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: AllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins(
+                            "http://localhost:8000"
+                        );
+                        builder.AllowAnyHeader();
+                    }
+                );
+            });
+
+            ConfigureMongoDB(services);
             ConfigureSwagger(services);
             ConfigureEntityFramework(services);
             ConfigureAuthentication(services);
@@ -175,6 +191,7 @@ namespace BorrowMyGameDotNet
 
             app.UseAuthentication();
             app.UseRouting();
+            app.UseCors(AllowSpecificOrigins);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
