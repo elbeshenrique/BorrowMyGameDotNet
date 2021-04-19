@@ -11,5 +11,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Repositories
         Task CreateAsync(Game game);
         Task UpdateAsync(int id, Game game);
         Task UpdateIsBorrowedAsync(Game game, bool isBorrowed);
+        Task DeleteAsync(Game game);
     }
 }

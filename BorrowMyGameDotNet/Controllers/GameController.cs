@@ -12,7 +12,7 @@ namespace BorrowMyGameDotNet.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class GameController : ControllerBase
     {
         private ApplicationDbContext dbContext;
@@ -62,6 +62,7 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<GameOutput>> PostAsync([FromBody] GameInput gameInput)
         {
@@ -76,6 +77,7 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAsync(int id, [FromBody] GameInput gameInput)
         {
@@ -94,12 +96,32 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPatch("{id}/borrow")]
         public async Task<ActionResult> UpdateIsBorrowedAsync(int id, [FromBody] bool isBorrowed)
         {
             try
             {
                 await gameUsecase.UpdateIsBorrowedAsync(id, isBorrowed);
+                return NoContent();
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
+            catch (GameUsecaseException exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await gameUsecase.DeleteAsync(id);
                 return NoContent();
             }
             catch (NotFoundException exception)

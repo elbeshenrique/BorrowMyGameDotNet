@@ -14,6 +14,7 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
         private const string FailureGettingGameDataMessage = "Failure on getting game data.";
         private const string FailureCreatingGameDataMessage = "Failure on creating game data.";
         private const string FailureUpdatingGameDataMessage = "Failure on updating game data.";
+        private const string FailureDeletingGameDataMessage = "Failure on deleting game data.";
         private const string GameNotFoundMessage = "Game with id: {0} not found.";
         private const string InvalidGameInputMessage = "Invalid game input.";
         private const string EmptyGameTitleMessage = "Game title cannot be empty.";
@@ -127,6 +128,23 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
             }
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            try {
+                var game = await repository.FindAsync(id);
+                if (game == null)
+                {
+                    throw new NotFoundException(String.Format(GameNotFoundMessage, id));
+                }
+
+                await repository.DeleteAsync(game);
+            }
+            catch (Exception exception)
+            {
+                throw new GameUsecaseException(FailureDeletingGameDataMessage, exception);
+            }
+        }
+
         private void ValidateGameInput(GameInput gameInput)
         {
             if (gameInput == null)
@@ -139,6 +157,5 @@ namespace BorrowMyGameDotNet.Modules.Core.Application.Usecases
                 throw new InvalidInputException(EmptyGameTitleMessage);
             }
         }
-
     }
 }

@@ -10,5 +10,6 @@ namespace BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game
         Task<GameOutput> CreateAsync(GameInput gameInput);
         Task UpdateAsync(int id, GameInput gameInput);
         Task UpdateIsBorrowedAsync(int id, bool isBorrowed);
+        Task DeleteAsync(int id);
     }
 }

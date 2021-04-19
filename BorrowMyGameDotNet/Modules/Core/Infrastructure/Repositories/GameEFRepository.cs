@@ -79,7 +79,20 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
             {
                 var isBorrowedProperty = dbContext.Entry(game).Property(g => g.IsBorrowed);
                 isBorrowedProperty.IsModified = true;
-                
+
+                await dbContext.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                throw new GameRepositoryException(exception);
+            }
+        }
+
+        public async Task DeleteAsync(Game game)
+        {
+            try
+            {
+                dbContext.Games.Remove(game);
                 await dbContext.SaveChangesAsync();
             }
             catch (Exception exception)
