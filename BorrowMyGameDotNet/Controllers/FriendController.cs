@@ -4,6 +4,7 @@ using BorrowMyGameDotNet.Data.Contexts;
 using BorrowMyGameDotNet.Modules.Core.Domain.Exceptions;
 using BorrowMyGameDotNet.Modules.Core.Domain.Presenters;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Friend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace BorrowMyGameDotNet.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class FriendController : ControllerBase
     {
         private ApplicationDbContext dbContext;
@@ -60,6 +62,7 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<FriendOutput>> PostAsync([FromBody] FriendInput FriendInput)
         {
@@ -74,6 +77,7 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAsync(int id, [FromBody] FriendInput FriendInput)
         {
@@ -92,6 +96,7 @@ namespace BorrowMyGameDotNet.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {

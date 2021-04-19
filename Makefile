@@ -35,13 +35,7 @@ me-down:
 	docker-compose stop mongo-express
 
 frontend-up:
-	docker-compose up -d frontend
-
-frontend-down:
-	docker-compose stop frontend
-
-nginx-up:
 	docker-compose up -d nginx
 
-nginx-down:
+frontend-down:
 	docker-compose stop nginx

@@ -13,12 +13,10 @@ namespace BorrowMyGameDotNet.Modules.Core.Infrastructure.Repositories
     public class FriendEFRepository : IFriendRepository
     {
         private readonly ApplicationDbContext dbContext;
-        private readonly IFriendPresenter presenter;
 
-        public FriendEFRepository(ApplicationDbContext dbContext, IFriendPresenter presenter)
+        public FriendEFRepository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.presenter = presenter;
         }
 
         public async Task<IEnumerable<Friend>> GetAllAsync()

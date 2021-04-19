@@ -8,6 +8,7 @@ namespace BorrowMyGameDotNet.Data.Contexts
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<Loan> Loans { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
