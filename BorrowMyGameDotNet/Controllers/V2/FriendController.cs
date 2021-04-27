@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BorrowMyGameDotNet.Controllers
+namespace BorrowMyGameDotNet.Controllers.V2
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     [Authorize]
     public class FriendController : ControllerBase

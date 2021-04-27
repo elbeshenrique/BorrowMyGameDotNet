@@ -11,7 +11,7 @@ using BorrowMyGameDotNet.Modules.Auth.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BorrowMyGameDotNet.Controllers
+namespace BorrowMyGameDotNet.Controllers.V1
 {
     [Route("api/v1/[controller]")]
     [ApiController]

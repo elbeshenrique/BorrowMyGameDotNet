@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using BorrowMyGameDotNet.Data.Contexts;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 
-namespace BorrowMyGameDotNet.Controllers
+namespace BorrowMyGameDotNet.Controllers.V1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
@@ -114,7 +114,7 @@ namespace BorrowMyGameDotNet.Controllers
                 return BadRequest(exception.Message);
             }
         }
-        
+
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)

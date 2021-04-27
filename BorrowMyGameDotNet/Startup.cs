@@ -28,6 +28,7 @@ using BorrowMyGameDotNet.Modules.Auth.Domain.Entities;
 using BorrowMyGameDotNet.Constants;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Game;
 using BorrowMyGameDotNet.Modules.Core.Domain.Usecases.Friend;
+using BorrowMyGameDotNet.Controllers.Conventions;
 
 namespace BorrowMyGameDotNet
 {
@@ -45,8 +46,22 @@ namespace BorrowMyGameDotNet
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Conventions.Add(new GroupingByNamespaceConvention());
+            });
 
+            ConfigureCors(services);
+            ConfigureMongoDB(services);
+            ConfigureSwagger(services);
+            ConfigureEntityFramework(services);
+            ConfigureAuthentication(services);
+
+            InjectDependencies(services);
+        }
+
+        private void ConfigureCors(IServiceCollection services)
+        {
             services.AddCors(options =>
             {
                 options.AddPolicy(
@@ -60,12 +75,6 @@ namespace BorrowMyGameDotNet
                     }
                 );
             });
-
-            ConfigureMongoDB(services);
-            ConfigureSwagger(services);
-            ConfigureEntityFramework(services);
-            ConfigureAuthentication(services);
-            InjectDependencies(services);
         }
 
         private void ConfigureMongoDB(IServiceCollection services)
@@ -92,9 +101,10 @@ namespace BorrowMyGameDotNet
 
         private void ConfigureSwagger(IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BorrowMyGameDotNet", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "BorrowMyGameDotNet", Version = "v1" });
+                options.SwaggerDoc("v2", new OpenApiInfo { Title = "BorrowMyGameDotNet V2", Version = "v2" });
             });
         }
 
@@ -137,30 +147,6 @@ namespace BorrowMyGameDotNet
                     ValidIssuer = JwtSecurityInfo.Issuer,
                     ValidAudience = JwtSecurityInfo.Audience,
                 };
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = async (context) =>
-                    {
-                        await Task.Yield();
-                    },
-                    OnForbidden = async (context) =>
-                    {
-                        await Task.Yield();
-                    },
-                    OnMessageReceived = async (context) =>
-                    {
-                        await Task.Yield();
-                    },
-                    OnTokenValidated = async (context) =>
-                    {
-                        await Task.Yield();
-                    },
-                    OnChallenge = async (context) =>
-                    {
-                        await Task.Yield();
-                    }
-                };
             });
         }
 
@@ -184,11 +170,14 @@ namespace BorrowMyGameDotNet
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BorrowMyGameDotNet v1"));
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BorrowMyGameDotNet v1");
+                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "BorrowMyGameDotNet v2");
+                });
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthentication();
             app.UseRouting();
             app.UseCors(AllowSpecificOrigins);
