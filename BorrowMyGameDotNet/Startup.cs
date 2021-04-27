@@ -34,8 +34,10 @@ namespace BorrowMyGameDotNet
 {
     public class Startup
     {
-
+        private const string AppName = "BorrowMyGameDotNet";
         private const string AllowSpecificOrigins = "AllowSpecificOrigins";
+        private const string DefaultConnectionStringName = "DefaultConnection";
+        private const string MySqlConnectionStringFormat = "server={0};port=3306;database={1};uid={2};password={3}";
 
         public Startup(IConfiguration configuration)
         {
@@ -103,8 +105,8 @@ namespace BorrowMyGameDotNet
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "BorrowMyGameDotNet", Version = "v1" });
-                options.SwaggerDoc("v2", new OpenApiInfo { Title = "BorrowMyGameDotNet V2", Version = "v2" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = AppName, Version = "v1" });
+                options.SwaggerDoc("v2", new OpenApiInfo { Title = $"{AppName} V2", Version = "v2" });
             });
         }
 
@@ -117,7 +119,7 @@ namespace BorrowMyGameDotNet
 
                     if (String.IsNullOrEmpty(mysqlHost))
                     {
-                        options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"));
+                        options.UseMySQL(Configuration.GetConnectionString(DefaultConnectionStringName));
                         return;
                     }
 
@@ -125,7 +127,7 @@ namespace BorrowMyGameDotNet
                     var mysqlUsername = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlUsername);
                     var mysqlPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.MySqlPassword);
 
-                    var connectionString = $"server={mysqlHost};port=3306;database={mysqlDatabase};uid={mysqlUsername};password={mysqlPassword}";
+                    var connectionString = String.Format(MySqlConnectionStringFormat, mysqlHost, mysqlDatabase, mysqlUsername, mysqlPassword);
                     options.UseMySQL(connectionString);
                 }
             );
@@ -172,8 +174,8 @@ namespace BorrowMyGameDotNet
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "BorrowMyGameDotNet v1");
-                    options.SwaggerEndpoint("/swagger/v2/swagger.json", "BorrowMyGameDotNet v2");
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", $"{AppName} v1");
+                    options.SwaggerEndpoint("/swagger/v2/swagger.json", $"{AppName} v2");
                 });
             }
 
